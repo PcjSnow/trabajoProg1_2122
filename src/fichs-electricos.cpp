@@ -105,6 +105,7 @@ bool leerPrecios(const string nombreFichero,
     inicial.agno = 2021;
     inicial.dia = 1;
     inicial.mes = mesInicial;
+    string basura;
 
     unsigned hora;
     double precio;
@@ -113,17 +114,120 @@ bool leerPrecios(const string nombreFichero,
 
     if (f.is_open()) {
 
-        leerPrecioHorario(f, fecha, hora, precio);
-        while (fecha.mes < mesInicial || fecha.mes > mesFinal)
+        //Nos quitamos de en medio la cabecera
+        getline(f, basura, '\n');
+        
+        while (!f.eof())
         {
-            leerPrecioHorario(f, fecha, hora, precio);
+            leerPrecioHorario(f, fecha, hora, precio); // leemos una línea
+
+            if (fecha.mes >= mesInicial || fecha.mes <= mesFinal) // comprobamos si el mes se encuentra entre inicial y final ( y por tanto nos es de interés)
+            {
+                //Calculamos el índice del vector registros donde irán todos los datos del día.
+                unsigned indice = diasTranscurridos(inicial, fecha);
+
+                //Metemos los datos de las 24h de ese día
+                for (unsigned i = 0; i < NUM_HORAS-1; i++)
+                {
+                    registros[indice].precios[hora] = precio;
+                    leerPrecioHorario(f, fecha, hora, precio); // leemos la siguiente hora
+                }
+                
+            }
+            else { // si el mes no es de nuestro interés simplemente nos lo saltamos
+
+                getline(f, basura, '\n');
+            }   
         }
-        
-        int index = diasTranscurridos(inicial, fecha);
-        
+
+        return true;
+
     }
     else {
         return false;
     }
                      
+}
+
+
+/*
+ * Pre:  «mesInicial» y «mesFinal» están ambos entre «PRIMER_MES» y «ULTIMO_MES»
+ *       y mesInicial < mesFinal; si para cada mes entre «mesInicial» y
+ *       «mesFinal» existe un fichero con nombre de la forma
+ *       "datos/" + nombreCliente + "-2021-" + mes-con-dos-cifras + ".csv", este
+ *       cumple con la sintaxis de la regla <fichero-consumos> establecida en el
+ *       enunciado.
+ * Post: Ha copiado los datos de precios horarios correspondientes a fechas 
+ *       entre «mesInicial» y «mesFinal» presentes en los ficheros mencionados
+ *       en la precondición en las componentes correspondientes a la hora del
+ *       consumo del campo «consumo» en las primeras componentes del vector
+ *       «registros». LOS DATOS DEL VECTOR CORRESPONDIENTE AL CAMPO «PRECIOS» NO
+ *       SE HAN MODIFICADO.
+ *       La función ha devuelto «true» si ha podido leer de todos los ficheros 
+ *       referidos en la precondición correctamente, y «false» en caso contrario.
+ */
+bool leerConsumos(const string nombreCliente,
+                  const unsigned mesInicial, const unsigned mesFinal,
+                  GastoDiario registros[]) {
+
+    for (unsigned i = mesInicial; i <= mesFinal; i++)
+    {
+        // Creamos el nombre del fichero
+        unsigned mes = i;
+        string nombreFichero;
+        if (i < 10)
+        {
+            nombreFichero = RUTA_DATOS + nombreCliente + "-2021-0" + to_string(i) + ".csv"; 
+        }
+        else {
+            nombreFichero = RUTA_DATOS + nombreCliente + "-2021-" + to_string(i) + ".csv";
+        }
+
+        ifstream f;
+
+        f.open(nombreFichero);
+
+        if (f.is_open())
+        {   
+            string basura;
+            Fecha fecha, inicial;
+            unsigned hora;
+            double consumo;
+            
+            inicial.agno = 2021;
+            inicial.dia = 1;
+            inicial.mes=mesInicial;
+
+            //Quitamos la cabecera
+            getline(f, basura, '\n');
+
+            while(!f.eof()) {
+                
+                //Leemos una línea del fichero de consumos
+                leerConsumoHorario(f, fecha, hora, consumo);
+
+                //Calculamos el índice del vector registros donde irán los datos de ese día
+                unsigned indice = diasTranscurridos(inicial, fecha);
+
+                //vamos metiendo las 24 horas
+                for (unsigned i = 0; i < NUM_HORAS-1; i++)
+                {
+                    registros[indice].consumos[hora] = consumo;
+                    leerConsumoHorario(f, fecha, hora, consumo); // leemos la siguiente hora
+                }
+                
+
+            }
+
+
+        }
+        else {
+            return false;
+        }
+        
+        f.close();
+        
+    }
+    
+    return true;
 }

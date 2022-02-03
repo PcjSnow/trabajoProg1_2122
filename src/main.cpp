@@ -40,12 +40,49 @@ void escribirInforme(ostream& f,
                      const GastoDiario regDiarios[], const unsigned numRegs,
                      const string nombreCliente, 
                      const unsigned mesInicial, const unsigned mesFinal) {
+
+    f << "\nINFORME DEL CLIENTE \"" << nombreCliente << "\" ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
+    f << "-----------------------------------------------------------------------------" << endl;
+
+    
+     
 }
+
+void preguntarDatos(string& nombreCliente, unsigned& mesInicial, unsigned& mesFinal, string& nombreFichero) {
+
+    cout << "Escriba el nombre de cliente: ";
+    cin >> nombreCliente;
+    cout << "Escriba el mes inicial y el final: ";
+    cin >> mesInicial >> mesFinal;
+
+    cout << "Escriba el nombre del fichero del informe";
+    cout << "\n(presione solo ENTRAR para escribirlo en la pantalla): ";
+    cin.get();
+
+}
+
 
 
 /*
  * ¡ESCRIBID LA ESPECIFICACIÓN DE ESTA FUNCIÓN!
  */
 int main() {
+
+    string nombreCliente, nombreFichero, nombreFicheroPrecios;
+    Fecha dia;
+    GastoDiario regDiarios[10000];
+    double precioMedioMinimo;
+    unsigned mesInicial, mesFinal;
+    nombreFicheroPrecios = "datos/tarifas-2021-ene-nov.csv";
+
+    preguntarDatos(nombreCliente, mesInicial, mesFinal, nombreFichero);
+
+    leerConsumos(nombreCliente, mesInicial, mesFinal, regDiarios);
+    leerPrecios(nombreFicheroPrecios, mesInicial, mesFinal, regDiarios);
+
+    diaMasBarato(regDiarios, 20, dia, precioMedioMinimo);
+
+    cout << dia.dia << ", " << precioMedioMinimo << endl;
+
     return 0;
 }
