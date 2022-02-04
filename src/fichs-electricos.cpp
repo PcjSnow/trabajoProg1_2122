@@ -132,6 +132,9 @@ bool leerPrecios(const string nombreFichero,
                     registros[indice].precios[hora] = precio;
                     leerPrecioHorario(f, fecha, hora, precio); // leemos la siguiente hora
                 }
+
+                registros[indice].precios[hora] = precio;
+                
                 
             }
             else { // si el mes no es de nuestro interés simplemente nos lo saltamos
@@ -215,6 +218,7 @@ bool leerConsumos(const string nombreCliente,
                     registros[indice].consumos[hora] = consumo;
                     leerConsumoHorario(f, fecha, hora, consumo); // leemos la siguiente hora
                 }
+                registros[indice].consumos[hora] = consumo;
                 
 
             }

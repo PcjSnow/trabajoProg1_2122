@@ -14,7 +14,7 @@ int main() {
     string basura;
     double precio, consumo;
 
-    /* Para el fichero de tarifas
+    //Para el fichero de tarifas
     getline(f, basura, ';');
     getline(f, basura, ';');
     getline(f, basura, ';');
@@ -56,11 +56,49 @@ int main() {
     getline(f, basura, '\n');
 
     cout << "\n precio:" << precio << " año: " << agno << " mes: " << mes << " dia: " << dia << " hora: " << hora;
-    */
+
+    getline(f, basura, ';');
+    getline(f, basura, ';');
+    getline(f, basura, ';');
+    getline(f, basura, ';');
+
+    f >> precio;
+    f.get();
+    // getline(f, agno_string, '-');
+    f >> agno;
+    f.get();
+    f >> mes;
+    f.get();
+    f >> dia;
+    f.get();
+    f >> hora;
+
+    getline(f, basura, '\n');
+
+    cout << "\n precio:" << precio << " año: " << agno << " mes: " << mes << " dia: " << dia << " hora: " << hora;
+    getline(f, basura, ';');
+    getline(f, basura, ';');
+    getline(f, basura, ';');
+    getline(f, basura, ';');
+
+    f >> precio;
+    f.get();
+    // getline(f, agno_string, '-');
+    f >> agno;
+    f.get();
+    f >> mes;
+    f.get();
+    f >> dia;
+    f.get();
+    f >> hora;
+
+    getline(f, basura, '\n');
+
+    cout << "\n precio:" << precio << " año: " << agno << " mes: " << mes << " dia: " << dia << " hora: " << hora;
 
     // Para el fichero de consumos:
 
-    getline(f, basura, ';');
+    /*getline(f, basura, ';');
     f >> dia;
     f.get();
     f >> mes;
@@ -91,7 +129,7 @@ int main() {
 
     getline(f, basura, '\n');
 
-    cout << "\ndia: " << dia << " mes: " << mes << " agno: " << agno << " hora: " << hora << " consumo: " << consumo;
+    cout << "\ndia: " << dia << " mes: " << mes << " agno: " << agno << " hora: " << hora << " consumo: " << consumo;*/
 
     return 0;
 }

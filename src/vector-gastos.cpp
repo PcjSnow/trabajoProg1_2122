@@ -16,12 +16,13 @@ void diaMasBarato(const GastoDiario regsDiarios[], const unsigned numRegs,
     //Hallemos qué día tuvo el coste diario más bajo
 
     double min = costeMedio(regsDiarios[0]);
+    dia.dia = 1;
 
     for (unsigned i = 1; i < numRegs; i++)
     {
         if (costeMedio(regsDiarios[i]) < min) {
             min = costeMedio(regsDiarios[i]);
-            dia.dia = i;
+            dia.dia = i+1;
         }
     }
     
@@ -74,7 +75,8 @@ double costeTerminoVariable(const GastoDiario regsDiarios[],
 
     for (unsigned i = 0; i < numRegs; i++)
     {
-        sum += costeDiario(regsDiarios[i]);
+        double coso = costeDiario(regsDiarios[i]);
+        sum += coso;
     }
     
     return sum;

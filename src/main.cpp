@@ -69,20 +69,32 @@ void preguntarDatos(string& nombreCliente, unsigned& mesInicial, unsigned& mesFi
 int main() {
 
     string nombreCliente, nombreFichero, nombreFicheroPrecios;
-    Fecha dia;
-    GastoDiario regDiarios[10000];
-    double precioMedioMinimo;
-    unsigned mesInicial, mesFinal;
+    Fecha dia, inicial, final;
+    inicial.dia = 1;
+    
+    inicial.agno = 2021;
+    
+    GastoDiario regDiarios[512];
+    double precioMedioMinimo, precioMaximo;
+    unsigned mesInicial, mesFinal, hora;
     nombreFicheroPrecios = "datos/tarifas-2021-ene-nov.csv";
 
     preguntarDatos(nombreCliente, mesInicial, mesFinal, nombreFichero);
+    inicial.mes = mesInicial;
+    final.mes = mesFinal;
+    final.dia = diasDelMes(mesFinal, 2021);
+    final.agno = 2021;
+    unsigned numRegs = diasTranscurridos(inicial, final);
 
     leerConsumos(nombreCliente, mesInicial, mesFinal, regDiarios);
     leerPrecios(nombreFicheroPrecios, mesInicial, mesFinal, regDiarios);
 
-    diaMasBarato(regDiarios, 20, dia, precioMedioMinimo);
+    diaMasBarato(regDiarios, numRegs, dia, precioMedioMinimo);
+    double euros = costeTerminoVariable(regDiarios, numRegs);
 
-    cout << dia.dia << ", " << precioMedioMinimo << endl;
-
+    cout << "\nEl día completo más barato fue el "<< dia.dia << "-" << dia.mes << "-" << dia.agno <<". Precio medio: " << precioMedioMinimo << " €/kWh" << endl;
+    horaMasCara(regDiarios, numRegs, dia, hora, precioMaximo);
+    cout << "HORA MAS CARA:" << hora << "precio maximo" << precioMaximo << endl;
+    
     return 0;
 }

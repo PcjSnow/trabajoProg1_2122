@@ -55,6 +55,8 @@ double costeDiario(const GastoDiario &gasto) {
     {
         sum += gasto.consumos[i] * gasto.precios[i];
     }
+
+    return sum;
     
 }
 

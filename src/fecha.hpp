@@ -15,6 +15,9 @@ struct Fecha {
     unsigned dia, mes, agno;
 };
 
+bool esBisiesto(unsigned agno);
+unsigned diasDelMes(unsigned mes, unsigned agno);
+
 
 /*
  * Pre:  ---
